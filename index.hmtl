@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Snookify | Custom 3D-Printed Toys</title>
+    <style>
+        :root {
+            --primary: #7B2BFF;
+            --secondary: #00E0FF;
+            --accent: #FF6BBD;
+        }
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f9f9f9;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .upload-box {
+            border: 2px dashed #ccc;
+            padding: 40px;
+            text-align: center;
+            margin: 20px 0;
+            cursor: pointer;
+        }
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .design-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+        }
+        .design-option {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: center;
+        }
+        .product-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .product-option {
+            border: 1px solid var(--primary);
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Step 1: Upload Image -->
+        <div id="step1">
+            <h1>Start Snookify yourself!</h1>
+            <p>Upload a picture of your favorite symbol, animal, or friend.</p>
+            <div class="upload-box" id="uploadBox">
+                <p>Drag & drop your image here or click to browse.</p>
+                <input type="file" id="imageUpload" accept="image/*" hidden>
+            </div>
+            <button class="btn" id="generateBtn" disabled>Generate Designs</button>
+        </div>
+
+        <!-- Step 2: AI Customization (hidden initially) -->
+        <div id="step2" style="display: none;">
+            <h2>Customize your design</h2>
+            <div>
+                <label>Style:</label>
+                <select id="style">
+                    <option value="childish">Childish</option>
+                    <option value="mature">Mature</option>
+                </select>
+            </div>
+            <div>
+                <label>Complexity:</label>
+                <select id="complexity">
+                    <option value="minimalist">Minimalist</option>
+                    <option value="complex">Complex</option>
+                </select>
+            </div>
+            <button class="btn" id="generateFinalBtn">Generate Final Designs</button>
+        </div>
+
+        <!-- Step 3: Design Options (hidden initially) -->
+        <div id="step3" style="display: none;">
+            <h2>Choose your favorite design</h2>
+            <div class="design-options" id="designOptions">
+                <!-- AI-generated designs will appear here -->
+            </div>
+            <button class="btn" id="selectDesignBtn" disabled>Next</button>
+        </div>
+
+        <!-- Step 4: Product Selection (hidden initially) -->
+        <div id="step4" style="display: none;">
+            <h2>Select products</h2>
+            <div class="product-options">
+                <div class="product-option" data-product="keychain">Keychain ($15)</div>
+                <div class="product-option" data-product="tshirt">T-shirt ($25)</div>
+                <div class="product-option" data-product="phonecase">Phone Case ($20)</div>
+                <div class="product-option" data-product="necklace">Necklace ($30)</div>
+                <div class="product-option" data-product="plushie">Plush Toy ($35)</div>
+            </div>
+            <button class="btn" id="checkoutBtn">Proceed to Checkout</button>
+        </div>
+    </div>
+
+    <script>
+        // Step 1: Image Upload
+        const uploadBox = document.getElementById('uploadBox');
+        const imageUpload = document.getElementById('imageUpload');
+        const generateBtn = document.getElementById('generateBtn');
+
+        uploadBox.addEventListener('click', () => imageUpload.click());
+        imageUpload.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                generateBtn.disabled = false;
+                uploadBox.innerHTML = `<img src="${URL.createObjectURL(e.target.files[0])}" width="100">`;
+            }
+        });
+
+        // Step 2: Generate AI Designs
+        generateBtn.addEventListener('click', () => {
+            document.getElementById('step1').style.display = 'none';
+            document.getElementById('step2').style.display = 'block';
+        });
+
+        // Step 3: Show AI-generated designs (mock)
+        document.getElementById('generateFinalBtn').addEventListener('click', () => {
+            document.getElementById('step2').style.display = 'none';
+            document.getElementById('step3').style.display = 'block';
+            
+            // Mock AI designs (replace with real API call)
+            const designs = ['Design 1', 'Design 2', 'Design 3', 'Design 4', 'Design 5'];
+            const designOptions = document.getElementById('designOptions');
+            designOptions.innerHTML = designs.map(design => `
+                <div class="design-option">
+                    <img src="https://via.placeholder.com/150?text=${design}" width="100%">
+                    <button onclick="selectDesign('${design}')">Select</button>
+                </div>
+            `).join('');
+        });
+
+        function selectDesign(design) {
+            document.getElementById('selectDesignBtn').disabled = false;
+            // Save selected design to localStorage
+            localStorage.setItem('selectedDesign', design);
+        }
+
+        // Step 4: Product Selection
+        document.getElementById('selectDesignBtn').addEventListener('click', () => {
+            document.getElementById('step3').style.display = 'none';
+            document.getElementById('step4').style.display = 'block';
+        });
+
+        // Step 5: Checkout (redirect to payment)
+        document.getElementById('checkoutBtn').addEventListener('click', () => {
+            alert('Redirecting to checkout...');
+            // In a real app: window.location.href = '/checkout';
+        });
+    </script>
+</body>
+</html>
